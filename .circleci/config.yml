@@ -1,0 +1,32 @@
+# Javascript Node CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-javascript/ for more details
+#
+version: 2
+
+defaults: &defaults
+  working_directory: ~/repo
+  docker:
+    - image: circleci/node:8.9.1
+
+jobs:
+  build:
+    <<: *defaults
+
+    steps:
+      - checkout
+
+      - run: npm install
+
+      - run:
+          name: Run Build
+          command: npm run build
+
+workflows:
+  version: 2
+  test-deploy:
+    jobs:
+      - build:
+          filters:
+            tags:
+              only: /^v.*/
